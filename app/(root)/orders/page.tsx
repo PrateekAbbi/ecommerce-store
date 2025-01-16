@@ -1,13 +1,20 @@
 import { getOrders } from "@/lib/actions/actions";
 
 import { getAuth } from "@clerk/nextjs/server";
-import { headers } from "next/headers";
 import Image from "next/image";
+import { headers } from "next/headers";
 
 const Orders = async () => {
-  const currentHeaders = await headers();
+  // const { userId } = getAuth(request);
 
-  const { userId } = getAuth({ headers: currentHeaders });
+  const currentHeaders = await headers();
+  const authRequest = {
+    headers: {
+      ...Object.fromEntries(currentHeaders.entries()),
+    },
+  };
+
+  const { userId } = getAuth(authRequest);
 
   const orders = await getOrders(userId as string);
 
@@ -95,4 +102,4 @@ const Orders = async () => {
 
 export default Orders;
 
-export const dynamic = "force-dyanmic";
+export const dynamic = "force-dynamic";
