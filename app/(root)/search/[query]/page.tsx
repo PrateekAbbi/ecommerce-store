@@ -1,8 +1,15 @@
 import ProductCard from "@/components/ProductCard";
 import { getSearchedProducts } from "@/lib/actions/actions";
 
-const SearchPage = async ({ params }: { params: { query: string } }) => {
-  const { query } = await params;
+type Props = {
+  params: Promise<{
+    query: string;
+  }>;
+};
+
+// const SearchPage = async ({ params }: { params: { query: string } }) => {
+const SearchPage = async (props: Props) => {
+  const { query } = await props.params;
 
   const searchedProducts = await getSearchedProducts(query);
 
@@ -29,5 +36,3 @@ const SearchPage = async ({ params }: { params: { query: string } }) => {
 export const dynamic = "force-dynamic";
 
 export default SearchPage;
-
-

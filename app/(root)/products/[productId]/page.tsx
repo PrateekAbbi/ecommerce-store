@@ -4,12 +4,19 @@ import ProductInfo from "@/components/ProductInfo";
 import { getProductDetails, getRelatedProducts } from "@/lib/actions/actions";
 import React from "react";
 
-const ProductDetails = async ({
-  params,
-}: {
-  params: { productId: string };
-}) => {
-  const { productId } = await params;
+type Props = {
+  params: Promise<{
+    productId: string;
+  }>;
+};
+
+// const ProductDetails = async ({
+//   params,
+// }: {
+//   params: { productId: string };
+// }) => {
+  const ProductDetails = async (props: Props) => {
+  const { productId } = await props.params;
 
   const productDetails = await getProductDetails(productId);
   const relatedProducts = await getRelatedProducts(productId);
