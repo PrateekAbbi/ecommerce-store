@@ -1,33 +1,53 @@
+// import { getOrders } from "@/lib/actions/actions";
+// import { getAuth } from "@clerk/nextjs/server";
+// import { headers } from "next/headers";
+// import Image from "next/image";
+// const Orders = async () => {
+//   const currentHeaders = await headers();
+//   const { userId } = getAuth({ headers: currentHeaders });
+//   console.log(userId)
+
+// const currentHeaders = await headers();
+// const authRequest = {
+//   headers: {
+//     ...Object.fromEntries(currentHeaders.entries()),
+//   },
+// };
+
+// const { userId } = getAuth(authRequest);
+
+// const orders = await getOrders(userId as string);
+
+"use client";
+
 import { getOrders } from "@/lib/actions/actions";
 
-import { getAuth } from "@clerk/nextjs/server";
+import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
-import { headers } from "next/headers";
+import { useEffect, useState } from "react";
 
-const Orders = async () => {
-  // const { userId } = getAuth(request);
+const Orders = () => {
+  const { userId } = useAuth();
+  const [orderData, setOrderData] = useState([]);
 
-  const currentHeaders = await headers();
-  const authRequest = {
-    headers: {
-      ...Object.fromEntries(currentHeaders.entries()),
-    },
-  };
-
-  const { userId } = getAuth(authRequest);
-
-  const orders = await getOrders(userId as string);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const data = await getOrders(userId!);
+      setOrderData(data);
+    }
+    fetchOrders();
+  }, [userId]);
 
   return (
     <div className="px-10 py-5 max-sm:px-3">
       <p className="text-heading3-bold my-10">Your orders</p>
-      {!orders ||
-        (orders.length === 0 && (
+      {!orderData ||
+        (orderData.length === 0 && (
           <p className="text-body-bold my-5">You have no orders yet</p>
         ))}
 
       <div className="flex flex-col gap-10">
-        {orders?.map((order: OrderType) => (
+        {orderData?.map((order: OrderType) => (
           <div
             key={order._id}
             className="flex flex-col gap-8 p-4 hover:bg-grey-1"

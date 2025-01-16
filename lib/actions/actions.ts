@@ -37,7 +37,8 @@ export const getOrders = async (customerId: string) => {
   const orders = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`
   );
-  return await orders.json();
+  const data = await orders.json();
+  return data;
 };
 
 export const getRelatedProducts = async (productId: string) => {

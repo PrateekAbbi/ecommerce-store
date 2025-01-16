@@ -57,7 +57,6 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, updateSignedInUser }: ProductCardProps ) => {
-  console.log(product)
   return (
     <Link
       href={`/products/${product._id}`}
